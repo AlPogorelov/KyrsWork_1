@@ -16,9 +16,6 @@ def open_xlsx(file_name):
     return excel_file
 
 
-file_name = '../data/operations.xlsx'
-
-
 def list_card_not_null(file_name):
     '''Функция принимает путь файла с транзакциями и отдает список карт
      исключающие пустые строки сталбца 'Номер карты'
@@ -29,9 +26,17 @@ def list_card_not_null(file_name):
     list_cards = pd.Series(not_null).unique().tolist()
     return list_cards
 
+def list_card(operations):
+    list_card = []
+    for i in operations:
+        if type(i['Номер карты']) != float:
+            list_card.append(i['Номер карты'])
+    origin_list_card = list(set(list_card))
+    return origin_list_card
 
 def summ(operations, list_card):
-    '''Функция принимает список словарей с транзакциями, а выдает спискос ловарей с информацией по каждой карте
+    '''Функция принимает список словарей с транзакциями, а выдает
+     спискос ловарей с информацией по каждой карте
      '''
     cashback = 0
     total_spent = 0
@@ -107,8 +112,8 @@ def currency_rate():
         status_code = response.status_code
         result = response.json()
         currency = {'currency': i,
-                          'rate': round(1/(result['rates'][i]), 2)
-                          }
+                    'rate': round(1/(result['rates'][i]), 2)
+                    }
 
         currency_rates.append(currency)
     return currency_rates
@@ -158,6 +163,7 @@ def sort_date_operations(operations, date):
     for i in sort_date_oper:
         i['Дата операции'] = i['Дата операции'].strftime("%d-%m-%Y %H:%M:%S")
 
+    sort_date_oper = sorted(sort_date_oper, key=lambda data: data["Дата операции"], reverse=True)
     return sort_date_oper
 
 
@@ -165,7 +171,7 @@ def web_main_def(date):
     file_name = '../data/operations.xlsx'
     operations = open_xlsx(file_name)
     operations = sort_date_operations(operations, date)
-    card_list = list_card_not_null(file_name)
+    card_list = list_card(operations)
     cards = summ(operations, card_list)
     top_transactions = top_five_transaction(operations)
     currency_rates = currency_rate()
@@ -180,7 +186,7 @@ def web_main_def(date):
                   }
 
     with open('output.json', 'w') as f:
-        json.dump(otvet_json, f)
+        json.dump(otvet_json, f, indent=4, ensure_ascii=False )
 
 
 
@@ -191,14 +197,17 @@ def web_main_def(date):
 
 if __name__ == '__main__':
     # print(list_card_not_null(file_name))
-    # x = open_xlsx(file_name)
+    # x = open_xlsx('../data/operations.xlsx')
+    # print(sort_date_operations(x, '2020.10.03 19:05:50'))
+    # print(list_card(x_))
     # list_card = list_card_not_null(file_name)
     # print(summ(x,list_card))
     # print(hello_user())
     # print(top_five_transaction(x))
     # print(currency_rate())
     # print(stock_prices())
-    web_main_def('2021-12-03 19:05:50')
+
+    # web_main_def('2020-10-03 19:05:50')
 
 
 
