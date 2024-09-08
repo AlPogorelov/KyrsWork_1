@@ -179,7 +179,7 @@ def web_main_def(date):
                   'stock_prices': stock_price
                   }
 
-    with open('output.json', 'w', encoding='utf-8') as f:
+    with open('output.json', 'w') as f:
         json.dump(otvet_json, f)
 
 
