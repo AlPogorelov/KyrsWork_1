@@ -1,10 +1,11 @@
 import datetime
 import json
+import logging
 import math
 import os
+
 import pandas as pd
 import requests
-import logging
 from dotenv import load_dotenv
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -53,13 +54,9 @@ def summ(operations, list_card):
     total_spent = 0
     cards_total_info = []
     for card in list_card:
-        card_info = [
-            operation for operation in operations if operation["Номер карты"] == card
-        ]
+        card_info = [operation for operation in operations if operation["Номер карты"] == card]
         total_spent = sum(d.get("Сумма платежа", 0) for d in card_info)
-        card_cashback_info = [
-            info for info in card_info if not math.isnan(info["Кэшбэк"])
-        ]
+        card_cashback_info = [info for info in card_info if not math.isnan(info["Кэшбэк"])]
         cashback = sum(d.get("Кэшбэк") for d in card_cashback_info)
         card_dict_info = {
             "last_digits": card[1:],
@@ -113,7 +110,7 @@ def top_five_transaction(operations):
 def currency_rate():
     """Функция выдает курс валют из списка user_settings.json"""
 
-    views_logger.info('Функция начала работу')
+    views_logger.info("Функция начала работу")
 
     load_dotenv()
     API_KEY = os.getenv("API_KEY")
@@ -144,7 +141,7 @@ def currency_rate():
 def stock_prices():
     """Функция по API получает данный о цене акций компаний указанных в user_settings.json"""
 
-    views_logger.info('Функция начала работу')
+    views_logger.info("Функция начала работу")
 
     load_dotenv()
 
@@ -174,7 +171,7 @@ def sort_date_operations(operations, date):
     """Функция отсортирвоала список словарей создав список словаряй со словарями входящими в
     промежуток времени от начала месца вводимой даты по дату"""
 
-    views_logger.info('Функция начала работу')
+    views_logger.info("Функция начала работу")
 
     date_ = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     date_new = date_.strftime("%d-%m-%Y %H:%M:%S")
@@ -189,15 +186,13 @@ def sort_date_operations(operations, date):
     for i in sort_date_oper:
         i["Дата операции"] = i["Дата операции"].strftime("%d-%m-%Y %H:%M:%S")
 
-    sort_date_oper = sorted(
-        sort_date_oper, key=lambda data: data["Дата операции"], reverse=True
-    )
+    sort_date_oper = sorted(sort_date_oper, key=lambda data: data["Дата операции"], reverse=True)
     views_logger.info("Функция выполнена, список словарей сортирован по диапозону дат.")
     return sort_date_oper
 
 
 def web_main_def(date):
-    '''Основная функция страницы "Главная", принимает дату формата 'YYYY-MM-DD HH:MM:SS' '''
+    """Основная функция страницы "Главная", принимает дату формата 'YYYY-MM-DD HH:MM:SS'"""
 
     views_logger.info("Основная функция запущена.")
 
@@ -224,5 +219,6 @@ def web_main_def(date):
 
     views_logger.info("Функция завершила работу, JSON ответ создан")
 
-if __name__ == '__main__':
-    web_main_def('2020-02-08 14:10:00')
+
+if __name__ == "__main__":
+    web_main_def("2020-02-08 14:10:00")
