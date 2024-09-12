@@ -69,7 +69,7 @@ def summ(operations, list_card):
 
 
 def hello_user():
-    """Функция на оснвое реального приветствует пользователя"""
+    """Функция, на основе реального времени, приветствует пользователя"""
 
     views_logger.info("Начало работы функции.")
     time = datetime.datetime.now()
@@ -135,6 +135,7 @@ def currency_rate():
         currency_rates.append(currency)
 
     views_logger.info("Функция выполнена, по API получен курс валют.")
+
     return currency_rates
 
 
@@ -219,6 +220,5 @@ def web_main_def(date):
 
     views_logger.info("Функция завершила работу, JSON ответ создан")
 
-
-if __name__ == "__main__":
-    web_main_def("2020-02-08 14:10:00")
+if __name__ == '__main__':
+    print(open_xlsx('../tests/test.xlsx'))

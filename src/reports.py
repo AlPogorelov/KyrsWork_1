@@ -61,8 +61,3 @@ def spending_by_category(transaction, category, date=datetime.datetime.now()):
     reports_logger.info("Конец работы функции.")
 
     return filter_df_category
-
-
-if __name__ == "__main__":
-    print(spending_by_category(transaction, "Супермаркеты", "2020-02-08 14:10:00"))
-    # print(pd.DataFrame(transactions))

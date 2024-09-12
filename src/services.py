@@ -55,9 +55,3 @@ def investment_bank(month, transactions, limit):
     services_logger.info("Функция закончила работу и получила сумму в Инвесткопилку в формате JSON")
 
     return sum_invest_month_json
-
-
-if __name__ == "__main__":
-    operations = open_xlsx("../data/operations.xlsx")
-    print(investment_bank("2020-03", operations, 50))
-    # print(x)
