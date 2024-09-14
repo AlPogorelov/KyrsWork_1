@@ -130,13 +130,13 @@ def currency_rate():
         response = requests.request("GET", url, headers=headers, data=payload)
 
         result = response.json()
-        currency = {"currency": i, "rate": round(1 / (result["rates"][i]), 2)}
+        # currency = {"currency": i, "rate": round(1 / (result["rates"][i]), 2)}
 
-        currency_rates.append(currency)
+        # currency_rates.append(currency)
 
     views_logger.info("Функция выполнена, по API получен курс валют.")
 
-    return currency_rates
+    return result
 
 
 def stock_prices():
@@ -197,7 +197,7 @@ def web_main_def(date):
 
     views_logger.info("Основная функция запущена.")
 
-    file_name = "../data/operations.xlsx"
+    file_name = "./data/operations.xlsx"
     operations = open_xlsx(file_name)
     operations = sort_date_operations(operations, date)
     card_list = list_card(operations)
@@ -215,10 +215,12 @@ def web_main_def(date):
         "stock_prices": stock_price,
     }
 
-    with open("output.json", "w") as f:
-        json.dump(otvet_json, f, indent=4, ensure_ascii=False)
+    json_result = json.dumps(otvet_json, ensure_ascii=False)
 
     views_logger.info("Функция завершила работу, JSON ответ создан")
 
+    return json_result
+
+
 if __name__ == '__main__':
-    print(open_xlsx('../tests/test.xlsx'))
+    print(currency_rate())

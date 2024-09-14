@@ -6,7 +6,6 @@ import os
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-from src.views import open_xlsx
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,10 +19,6 @@ file_formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(funcNam
 file_handler.setFormatter(file_formatter)
 reports_logger.addHandler(file_handler)
 reports_logger.setLevel(logging.DEBUG)
-
-
-transactions = open_xlsx("../data/operations.xlsx")
-transaction = pd.DataFrame(transactions)
 
 
 def save_result_func(file_name="reports.csv"):
@@ -41,15 +36,19 @@ def save_result_func(file_name="reports.csv"):
 
 
 @save_result_func()
-def spending_by_category(transaction, category, date=datetime.datetime.now()):
+def spending_by_category(transaction, category, date=None):
     """Функция принимает дата фрейм c транзакциями, название категории
     и опциональную дату (по умолчанию настоящее время) на выходе
      Датафрейм с тратами по заданной категории за последние 3 месяца с введенной даты"""
 
     reports_logger.info("Начало работы функции.")
 
-    df = transaction
-    if date is not datetime.datetime.now():
+    df = pd.DataFrame(transaction)
+
+    if date is None:
+        date_ = datetime.datetime.now()
+        start_date = date_ - relativedelta(months=3)
+    else:
         date_ = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         start_date = date_ - relativedelta(months=3)
 

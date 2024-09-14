@@ -1,9 +1,12 @@
+import json
+import unittest
 from unittest.mock import Mock, patch
 
 import pytest
+import self
 from pandas import DataFrame
 
-from src.views import hello_user, open_xlsx, list_card, summ
+from src.views import hello_user, open_xlsx, list_card, summ, sort_date_operations, currency_rate
 
 
 def test_hello():
@@ -12,7 +15,7 @@ def test_hello():
 
 
 def tests_open_xlsx():
-    test_file_name = '../tests/test.xlsx'
+    test_file_name = './tests/test.xlsx'
 
     df = open_xlsx(test_file_name)
 
@@ -74,3 +77,17 @@ def test_summ():
     result = summ(operations, list_card)
     assert result == expect
 
+data_test = [{"Дата операции": "2023-05-05", "Сумма операции": 100, "Категория": "Продукты"},
+             {"Дата операции": "2023-06-15", "Сумма операции": 150, "Категория": "Ресторан"},
+             {"Дата операции": "2023-05-10", "Сумма операции": 200, "Категория": "Одежда"},
+             {"Дата операции": "2023-05-11", "Сумма операции": 300, "Категория": "Продукты"},
+             {"Дата операции": "2023-05-20", "Сумма операции": 250, "Категория": "Ресторан"},
+             {"Дата операции": "2023-01-15", "Сумма операции": 120, "Категория": "Продукты"},
+             {"Дата операции": "2023-01-20", "Сумма операции": 180, "Категория": "Ресторан"}
+             ]
+def test_sort_date_operations():
+    result = sort_date_operations(data_test, '2023-01-30 00:00:00')
+    expect = [{"Дата операции": "20-01-2023 00:00:00", "Сумма операции": 180, "Категория": "Ресторан"},
+              {"Дата операции": "15-01-2023 00:00:00", "Сумма операции": 120, "Категория": "Продукты"}
+              ]
+    assert result == expect

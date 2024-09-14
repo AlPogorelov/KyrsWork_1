@@ -5,7 +5,6 @@ import os
 
 import pandas as pd
 
-from src.views import open_xlsx
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,7 +31,16 @@ def investment_bank(month, transactions, limit):
     start_month_ = month + "-01"
     start_month = datetime.datetime.strptime(start_month_, "%Y-%m-%d")
 
-    end_month_ = month + "-31"
+    if month[-2:] in ["1", "3", "5", "7", "8", "10", "12"]:
+        x = "-31"
+    elif month[-2:] in ["4", "6", "9", "11"]:
+        x = "-30"
+    else:
+        if int(month[0:3]) // 4 == 0:
+            x = "-28"
+        else:
+            x = "-27"
+    end_month_ = month + x
     end_month = datetime.datetime.strptime(end_month_, "%Y-%m-%d")
 
     df = pd.DataFrame(transactions)
@@ -50,7 +58,7 @@ def investment_bank(month, transactions, limit):
 
         sum_invest_month += sum_point
 
-    sum_invest_month_json = json.dumps(sum_invest_month)
+    sum_invest_month_json = json.dumps({'Инвесткопилка': sum_invest_month}, ensure_ascii=False)
 
     services_logger.info("Функция закончила работу и получила сумму в Инвесткопилку в формате JSON")
 

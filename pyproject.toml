@@ -18,6 +18,9 @@ reviews = "^0.6.0"
 requests = "^2.32.3"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^5.0.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
