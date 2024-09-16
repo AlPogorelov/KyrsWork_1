@@ -1,6 +1,8 @@
 import json
 import os
 import unittest
+import datetime
+from unittest import mock
 from unittest.mock import Mock, patch, mock_open
 
 import pytest
@@ -9,10 +11,30 @@ from pandas import DataFrame
 
 from src.views import hello_user, open_xlsx, list_card, summ, sort_date_operations, currency_rate, stock_prices
 
+@pytest.mark.parametrize(
+    "mock_time, expected_greeting",
+    [
+        ("23:00", "Доброй ночи!"),
+        ("06:00", "Доброе утро!"),
+        ("14:00", "Добрый день!"),
+        ("19:00", "Доброго вечера!"),
+        ("03:00", "Доброй ночи!"),
+        ("10:00", "Доброе утро!"),
+        ("16:00", "Добрый день!"),
+        ("21:00", "Доброго вечера!"),
+    ]
+)
+def test_hello(mock_time, expected_greeting):
 
-def test_hello():
-    assert hello_user() in ['Доброй ночи!', "Доброе утро!", "Добрый день!", "Доброго вечера!"]
+    time = datetime.datetime.strptime(mock_time, '%H:%M')
 
+    mock_time = time
+
+    with patch('datetime.datetime') as mock_datetime:
+        mock_datetime.now.return_value = mock_time
+
+        result = hello_user()
+        assert result == expected_greeting
 
 
 def tests_open_xlsx():

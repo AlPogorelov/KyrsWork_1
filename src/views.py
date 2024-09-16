@@ -74,9 +74,9 @@ def hello_user():
     views_logger.info("Начало работы функции.")
     time = datetime.datetime.now()
     format_time = time.strftime("%H")
-    if format_time in ["22", "23", "0", "1", "2", "3", "4"]:
+    if format_time in ["22", "23", "0", "01", "02", "03", "04"]:
         hello = "Доброй ночи!"
-    elif format_time in ["5", "6", "7", "8", "9", "10", "11"]:
+    elif format_time in ["05", "06", "07", "08", "09", "10", "11"]:
         hello = "Доброе утро!"
     elif format_time in ["12", "13", "14", "15", "16"]:
         hello = "Добрый день!"
