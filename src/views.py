@@ -116,8 +116,10 @@ def currency_rate():
     API_KEY = os.getenv("API_KEY")
 
     currency_rates = []
+    file_name = './user_settings.json'
+    full_file_name = os.path.abspath(file_name)
 
-    with open("../user_settings.json", encoding="utf-8") as f:
+    with open(full_file_name, encoding="utf-8") as f:
         user_settings = json.load(f)
 
     symbol = user_settings["user_currencies"]
@@ -130,13 +132,13 @@ def currency_rate():
         response = requests.request("GET", url, headers=headers, data=payload)
 
         result = response.json()
-        # currency = {"currency": i, "rate": round(1 / (result["rates"][i]), 2)}
+        currency = {"currency": i, "rate": round(1 / (result["rates"][i]), 2)}
 
-        # currency_rates.append(currency)
+        currency_rates.append(currency)
 
     views_logger.info("Функция выполнена, по API получен курс валют.")
 
-    return result
+    return currency_rates
 
 
 def stock_prices():
@@ -150,7 +152,10 @@ def stock_prices():
 
     currency_rates = []
 
-    with open("../user_settings.json") as f:
+    file_name = './user_settings.json'
+    full_file_name = os.path.abspath(file_name)
+
+    with open(full_file_name) as f:
         user_settings = json.load(f)
 
     symbol = user_settings["user_stocks"]
