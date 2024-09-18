@@ -6,7 +6,6 @@ import os
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Создаем путь до файла логов относительно текущей директории

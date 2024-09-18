@@ -116,7 +116,7 @@ def currency_rate():
     API_KEY = os.getenv("API_KEY")
 
     currency_rates = []
-    file_name = './user_settings.json'
+    file_name = "./user_settings.json"
     full_file_name = os.path.abspath(file_name)
 
     with open(full_file_name, encoding="utf-8") as f:
@@ -152,7 +152,7 @@ def stock_prices():
 
     currency_rates = []
 
-    file_name = './user_settings.json'
+    file_name = "./user_settings.json"
     full_file_name = os.path.abspath(file_name)
 
     with open(full_file_name) as f:
@@ -225,7 +225,3 @@ def web_main_def(date):
     views_logger.info("Функция завершила работу, JSON ответ создан")
 
     return json_result
-
-
-if __name__ == '__main__':
-    print(currency_rate())

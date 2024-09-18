@@ -5,7 +5,6 @@ import os
 
 import pandas as pd
 
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Создаем путь до файла логов относительно текущей директории
@@ -58,7 +57,7 @@ def investment_bank(month, transactions, limit):
 
         sum_invest_month += sum_point
 
-    sum_invest_month_json = json.dumps({'Инвесткопилка': sum_invest_month}, ensure_ascii=False)
+    sum_invest_month_json = json.dumps({"Инвесткопилка": sum_invest_month}, ensure_ascii=False)
 
     services_logger.info("Функция закончила работу и получила сумму в Инвесткопилку в формате JSON")
 
